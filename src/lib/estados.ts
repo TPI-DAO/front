@@ -1,4 +1,26 @@
-import type { EstadoPrestamo, EstadoReserva } from '@/types/api'
+import type {
+  EstadoEjemplar,
+  EstadoPrestamo,
+  EstadoReserva,
+  EstadoSede,
+  EstadoSocio,
+} from '@/types/api'
+
+export const ESTADOS_SEDE: EstadoSede[] = ['ACTIVA', 'BAJA']
+
+export const ESTADOS_SOCIO: EstadoSocio[] = ['HABILITADO', 'INHABILITADO']
+
+export const ESTADOS_EJEMPLAR: EstadoEjemplar[] = [
+  'DISPONIBLE',
+  'RESERVADO',
+  'PRESTADO',
+  'EN_TRANSITO',
+  'PENDIENTE_RETORNO',
+  'DANADO',
+  'EXTRAVIADO',
+  'DESTRUIDO',
+  'BAJA',
+]
 
 export const ESTADOS_PRESTAMO: EstadoPrestamo[] = [
   'SOLICITADO',
@@ -29,6 +51,7 @@ const ETIQUETAS: Record<string, string> = {
   EXTRAVIADO: 'Extraviado',
   HABILITADO: 'Habilitado',
   INCIDENCIA: 'Incidencia',
+  INACTIVO: 'Inactivo',
   INHABILITADO: 'Inhabilitado',
   PENDIENTE_RETORNO: 'Pendiente de retorno',
   PRESTADO: 'Prestado',
@@ -41,4 +64,10 @@ const ETIQUETAS: Record<string, string> = {
 
 export function etiquetaEstado(estado: string): string {
   return ETIQUETAS[estado] ?? estado.replaceAll('_', ' ')
+}
+
+export function etiquetaRol(rol: string): string {
+  if (rol === 'ADMIN') return 'Administrador'
+  if (rol === 'SOCIO') return 'Socio'
+  return rol
 }

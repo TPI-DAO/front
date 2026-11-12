@@ -14,6 +14,7 @@ import { useAuth } from '@/features/auth/useAuth'
 import { mensajeDeError } from '@/lib/errors'
 import { fieldClass } from '@/lib/formStyles'
 import { formatearFecha } from '@/lib/format'
+import { queryKeys } from '@/lib/queryKeys'
 
 const passwordSchema = z
   .object({
@@ -134,7 +135,7 @@ export function PerfilPage() {
   const esSocio = usuario?.rol === 'SOCIO'
 
   const socioQuery = useQuery({
-    queryKey: ['socio', 'me'],
+    queryKey: queryKeys.miSocio,
     queryFn: obtenerMiSocio,
     enabled: esSocio,
   })

@@ -27,6 +27,7 @@ const estadoTones: Record<string, BadgeTone> = {
   RECIBIDO: 'success',
   EN_TRANSITO: 'warning',
   PENDIENTE_RETORNO: 'warning',
+  PRESTADO: 'info',
   RESERVADO: 'warning',
   VENCIDO: 'danger',
   INHABILITADO: 'danger',

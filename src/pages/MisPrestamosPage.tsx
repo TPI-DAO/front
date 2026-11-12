@@ -9,12 +9,13 @@ import { useLibrosSedes } from '@/features/catalogo/useLibrosSedes'
 import { mensajeDeError } from '@/lib/errors'
 import { ESTADOS_PRESTAMO } from '@/lib/estados'
 import { formatearFecha, formatearFechaHora } from '@/lib/format'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function MisPrestamosPage() {
   const [estado, setEstado] = useState('')
 
   const prestamosQuery = useQuery({
-    queryKey: ['prestamos', { estado: estado || undefined }],
+    queryKey: queryKeys.prestamosLista({ estado: estado || undefined }),
     queryFn: () => listarPrestamos({ estado: estado || undefined }),
   })
   const { titulos, sedes, isLoading: catalogosLoading, error: catalogosError } = useLibrosSedes()

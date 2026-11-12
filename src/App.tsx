@@ -28,6 +28,21 @@ const MisReservasPage = lazy(() =>
 const PerfilPage = lazy(() =>
   import('@/pages/PerfilPage').then((modulo) => ({ default: modulo.PerfilPage })),
 )
+const SedesPage = lazy(() =>
+  import('@/pages/admin/SedesPage').then((modulo) => ({ default: modulo.SedesPage })),
+)
+const SociosPage = lazy(() =>
+  import('@/pages/admin/SociosPage').then((modulo) => ({ default: modulo.SociosPage })),
+)
+const LibrosPage = lazy(() =>
+  import('@/pages/admin/LibrosPage').then((modulo) => ({ default: modulo.LibrosPage })),
+)
+const EjemplaresPage = lazy(() =>
+  import('@/pages/admin/EjemplaresPage').then((modulo) => ({ default: modulo.EjemplaresPage })),
+)
+const UsuariosPage = lazy(() =>
+  import('@/pages/admin/UsuariosPage').then((modulo) => ({ default: modulo.UsuariosPage })),
+)
 
 export default function App() {
   return (
@@ -50,42 +65,10 @@ export default function App() {
             </Route>
 
             <Route element={<RequireRole roles={['ADMIN']} />}>
-              <Route
-                path="admin/sedes"
-                element={
-                  <PlaceholderPage
-                    title="Sedes"
-                    description="Alta, edición y listado de sedes de la biblioteca."
-                  />
-                }
-              />
-              <Route
-                path="admin/socios"
-                element={
-                  <PlaceholderPage
-                    title="Socios"
-                    description="Alta, edición y listado de socios."
-                  />
-                }
-              />
-              <Route
-                path="admin/libros"
-                element={
-                  <PlaceholderPage
-                    title="Libros"
-                    description="Alta, edición y listado del catálogo de libros."
-                  />
-                }
-              />
-              <Route
-                path="admin/ejemplares"
-                element={
-                  <PlaceholderPage
-                    title="Ejemplares"
-                    description="Alta, edición y estado de los ejemplares."
-                  />
-                }
-              />
+              <Route path="admin/sedes" element={<SedesPage />} />
+              <Route path="admin/socios" element={<SociosPage />} />
+              <Route path="admin/libros" element={<LibrosPage />} />
+              <Route path="admin/ejemplares" element={<EjemplaresPage />} />
               <Route
                 path="admin/prestamos"
                 element={
@@ -122,15 +105,7 @@ export default function App() {
                   />
                 }
               />
-              <Route
-                path="admin/usuarios"
-                element={
-                  <PlaceholderPage
-                    title="Usuarios"
-                    description="Alta de usuarios, asignación de roles y estado de cuentas."
-                  />
-                }
-              />
+              <Route path="admin/usuarios" element={<UsuariosPage />} />
             </Route>
           </Route>
         </Route>

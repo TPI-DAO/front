@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { obtenerUsuarioActual, loginRequest } from '@/api/auth'
 import { AUTH_LOGOUT_EVENT } from '@/api/client'
+import { queryKeys } from '@/lib/queryKeys'
 import { tokenStorage } from '@/lib/storage'
 import { AuthContext, type AuthContextValue } from './auth-context'
 
@@ -10,7 +11,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(() => tokenStorage.get())
 
   const { data: usuario, isLoading } = useQuery({
-    queryKey: ['auth', 'me'],
+    queryKey: queryKeys.me,
     queryFn: async () => {
       try {
         return await obtenerUsuarioActual()

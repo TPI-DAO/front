@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { EmptyState, ErrorState, LoadingState } from '@/components/ui/States'
 import { mensajeDeError } from '@/lib/errors'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function LibroDetallePage() {
   const { libroId: libroIdParam } = useParams<{ libroId: string }>()
@@ -15,13 +16,13 @@ export function LibroDetallePage() {
   const idValido = Number.isInteger(libroId) && libroId > 0
 
   const libroQuery = useQuery({
-    queryKey: ['libro', libroId],
+    queryKey: queryKeys.libro(libroId),
     queryFn: () => obtenerLibro(libroId),
     enabled: idValido,
   })
 
   const disponibilidadQuery = useQuery({
-    queryKey: ['disponibilidad', { libro_id: libroId }],
+    queryKey: queryKeys.disponibilidadLista({ libro_id: libroId }),
     queryFn: () => consultarDisponibilidad({ libro_id: libroId }),
     enabled: idValido,
   })

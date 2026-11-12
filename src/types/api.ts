@@ -4,6 +4,17 @@ export type EstadoSede = 'ACTIVA' | 'BAJA'
 
 export type EstadoSocio = 'HABILITADO' | 'INHABILITADO'
 
+export type EstadoEjemplar =
+  | 'DISPONIBLE'
+  | 'RESERVADO'
+  | 'PRESTADO'
+  | 'EN_TRANSITO'
+  | 'PENDIENTE_RETORNO'
+  | 'DANADO'
+  | 'EXTRAVIADO'
+  | 'DESTRUIDO'
+  | 'BAJA'
+
 export type EstadoPrestamo =
   'SOLICITADO' | 'EN_TRANSITO' | 'ACTIVO' | 'VENCIDO' | 'DEVUELTO' | 'CANCELADO'
 
@@ -50,6 +61,21 @@ export interface Libro {
   genero: Genero
   autor: Autor
   editorial: Editorial
+}
+
+export interface LibroResumen {
+  id: number
+  titulo: string
+  isbn: string
+}
+
+export interface Ejemplar {
+  id: number
+  codigo_inventario: string | null
+  sede_id: number
+  estado: EstadoEjemplar
+  fecha_alta: string
+  libro: LibroResumen
 }
 
 export interface Sede {

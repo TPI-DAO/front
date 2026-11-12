@@ -15,18 +15,22 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { EmptyState, ErrorState, LoadingState } from '@/components/ui/States'
 import { mensajeDeError } from '@/lib/errors'
 import { fieldClass } from '@/lib/formStyles'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function CatalogoPage() {
   const [busqueda, setBusqueda] = useState('')
   const [filtros, setFiltros] = useState<LibrosFiltros>({})
 
   const librosQuery = useQuery({
-    queryKey: ['libros', filtros],
+    queryKey: queryKeys.librosLista(filtros),
     queryFn: () => listarLibros(filtros),
   })
-  const generosQuery = useQuery({ queryKey: ['generos'], queryFn: listarGeneros })
-  const autoresQuery = useQuery({ queryKey: ['autores'], queryFn: listarAutores })
-  const editorialesQuery = useQuery({ queryKey: ['editoriales'], queryFn: listarEditoriales })
+  const generosQuery = useQuery({ queryKey: queryKeys.generos, queryFn: listarGeneros })
+  const autoresQuery = useQuery({ queryKey: queryKeys.autores, queryFn: listarAutores })
+  const editorialesQuery = useQuery({
+    queryKey: queryKeys.editoriales,
+    queryFn: listarEditoriales,
+  })
 
   const aplicarBusqueda = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()

@@ -70,9 +70,9 @@ CORS por defecto.
 src/
   api/          Cliente Axios y llamadas a la API
   components/   Layout, guards y componentes de UI reutilizables
-  features/     Lógica por dominio (auth, catálogo)
-  lib/          Utilidades (storage, errores)
-  pages/        Vistas de la aplicación
+  features/     Lógica por dominio (auth, catálogo, administración)
+  lib/          Utilidades (storage, errores, query keys, feedback)
+  pages/        Vistas de la aplicación (incluye pages/admin)
   types/        Tipos compartidos de la API
 ```
 
@@ -83,3 +83,5 @@ src/
   protegidas.
 - **M2**: catálogo con filtros, detalle de libro con disponibilidad por sede, consulta de
   disponibilidad, mis préstamos, mis reservas y perfil con cambio de contraseña.
+- **M3**: administración de sedes, socios, libros, ejemplares y usuarios (altas, ediciones,
+  cambios de estado y bajas según las reglas del backend).

@@ -9,12 +9,13 @@ import { useLibrosSedes } from '@/features/catalogo/useLibrosSedes'
 import { mensajeDeError } from '@/lib/errors'
 import { ESTADOS_RESERVA } from '@/lib/estados'
 import { formatearFechaHora } from '@/lib/format'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function MisReservasPage() {
   const [estado, setEstado] = useState('')
 
   const reservasQuery = useQuery({
-    queryKey: ['reservas', { estado: estado || undefined }],
+    queryKey: queryKeys.reservasLista({ estado: estado || undefined }),
     queryFn: () => listarReservas({ estado: estado || undefined }),
   })
   const { titulos, sedes, isLoading: catalogosLoading, error: catalogosError } = useLibrosSedes()

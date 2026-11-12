@@ -9,6 +9,7 @@ import { PageHeader } from '@/components/ui/PageHeader'
 import { EmptyState, ErrorState, LoadingState } from '@/components/ui/States'
 import { mensajeDeError } from '@/lib/errors'
 import { fieldClass } from '@/lib/formStyles'
+import { queryKeys } from '@/lib/queryKeys'
 
 export function DisponibilidadPage() {
   const [busqueda, setBusqueda] = useState('')
@@ -16,19 +17,17 @@ export function DisponibilidadPage() {
   const [sedeId, setSedeId] = useState<number | undefined>()
   const [soloDisponibles, setSoloDisponibles] = useState(false)
 
-  const sedesQuery = useQuery({ queryKey: ['sedes'], queryFn: listarSedes })
+  const sedesQuery = useQuery({ queryKey: queryKeys.sedes, queryFn: () => listarSedes() })
+
+  const filtrosDisponibilidad = {
+    titulo: tituloAplicado || undefined,
+    sede_id: sedeId,
+    solo_disponibles: soloDisponibles,
+  }
 
   const disponibilidadQuery = useQuery({
-    queryKey: [
-      'disponibilidad',
-      { titulo: tituloAplicado || undefined, sede_id: sedeId, solo_disponibles: soloDisponibles },
-    ],
-    queryFn: () =>
-      consultarDisponibilidad({
-        titulo: tituloAplicado || undefined,
-        sede_id: sedeId,
-        solo_disponibles: soloDisponibles,
-      }),
+    queryKey: queryKeys.disponibilidadLista(filtrosDisponibilidad),
+    queryFn: () => consultarDisponibilidad(filtrosDisponibilidad),
   })
 
   const aplicarBusqueda = (event: FormEvent<HTMLFormElement>) => {
