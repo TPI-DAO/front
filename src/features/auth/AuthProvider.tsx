@@ -11,7 +11,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const { data: usuario, isLoading } = useQuery({
     queryKey: ['auth', 'me'],
-    queryFn: obtenerUsuarioActual,
+    queryFn: async () => {
+      try {
+        return await obtenerUsuarioActual()
+      } catch (error) {
+        tokenStorage.clear()
+        throw error
+      }
+    },
     enabled: Boolean(token),
     retry: false,
     staleTime: 5 * 60 * 1000,
@@ -20,7 +27,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = useCallback(() => {
     tokenStorage.clear()
     setToken(null)
-    queryClient.removeQueries({ queryKey: ['auth'] })
+    queryClient.clear()
   }, [queryClient])
 
   useEffect(() => {
@@ -32,7 +39,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     async (username: string, password: string) => {
       const response = await loginRequest(username, password)
       tokenStorage.set(response.access_token)
-      queryClient.removeQueries({ queryKey: ['auth'] })
+      queryClient.clear()
       setToken(response.access_token)
     },
     [queryClient],

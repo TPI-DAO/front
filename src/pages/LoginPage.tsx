@@ -2,10 +2,12 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { Library } from 'lucide-react'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { z } from 'zod'
+import { Button } from '@/components/ui/Button'
 import { useAuth } from '@/features/auth/useAuth'
 import { mensajeDeError } from '@/lib/errors'
+import { fieldClass } from '@/lib/formStyles'
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Ingresá tu usuario'),
@@ -17,7 +19,13 @@ type LoginValues = z.infer<typeof loginSchema>
 export function LoginPage() {
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
+  const location = useLocation()
   const [serverError, setServerError] = useState<string | null>(null)
+
+  const state = location.state as { from?: string } | null
+  const from = state?.from
+  const destino =
+    from && from !== '/login' && from.startsWith('/') && !from.startsWith('//') ? from : '/'
 
   const {
     register,
@@ -36,7 +44,7 @@ export function LoginPage() {
     setServerError(null)
     try {
       await login(values.username, values.password)
-      navigate('/', { replace: true })
+      navigate(destino, { replace: true })
     } catch (error) {
       setServerError(mensajeDeError(error))
     }
@@ -62,7 +70,7 @@ export function LoginPage() {
               id="username"
               type="text"
               autoComplete="username"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+              className={fieldClass}
               {...register('username')}
             />
             {errors.username && (
@@ -78,7 +86,7 @@ export function LoginPage() {
               id="password"
               type="password"
               autoComplete="current-password"
-              className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+              className={fieldClass}
               {...register('password')}
             />
             {errors.password && (
@@ -90,16 +98,14 @@ export function LoginPage() {
             <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{serverError}</p>
           )}
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-lg bg-indigo-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
-          >
+          <Button type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting ? 'Ingresando…' : 'Ingresar'}
-          </button>
+          </Button>
         </form>
 
-        <p className="mt-6 text-xs text-slate-400">Usuario inicial: admin / admin1234</p>
+        {import.meta.env.DEV && (
+          <p className="mt-6 text-xs text-slate-400">Usuario inicial: admin / admin1234</p>
+        )}
       </div>
     </div>
   )

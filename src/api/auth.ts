@@ -15,3 +15,13 @@ export async function obtenerUsuarioActual(): Promise<Usuario> {
   const { data } = await api.get<Usuario>('/auth/me')
   return data
 }
+
+export async function cambiarPassword(
+  passwordActual: string,
+  passwordNueva: string,
+): Promise<void> {
+  await api.post('/auth/me/password', {
+    password_actual: passwordActual,
+    password_nueva: passwordNueva,
+  })
+}

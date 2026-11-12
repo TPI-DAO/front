@@ -2,12 +2,24 @@ const TOKEN_KEY = 'biblioteca.token'
 
 export const tokenStorage = {
   get(): string | null {
-    return localStorage.getItem(TOKEN_KEY)
+    try {
+      return localStorage.getItem(TOKEN_KEY)
+    } catch {
+      return null
+    }
   },
   set(token: string): void {
-    localStorage.setItem(TOKEN_KEY, token)
+    try {
+      localStorage.setItem(TOKEN_KEY, token)
+    } catch {
+      return
+    }
   },
   clear(): void {
-    localStorage.removeItem(TOKEN_KEY)
+    try {
+      localStorage.removeItem(TOKEN_KEY)
+    } catch {
+      return
+    }
   },
 }

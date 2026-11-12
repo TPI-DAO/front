@@ -21,8 +21,17 @@ préstamos interbibliotecarios.
 
 ```bash
 npm install
-cp .env.example .env
 npm run dev
+```
+
+Antes de levantar el servidor, creá el archivo de entorno a partir del ejemplo:
+
+```bash
+# Linux / macOS
+cp .env.example .env
+
+# PowerShell
+Copy-Item .env.example .env
 ```
 
 La aplicación queda disponible en `http://localhost:5173`. El backend ya permite este origen por
@@ -40,6 +49,7 @@ CORS por defecto.
 | ---------------------- | ---------------------------------------- |
 | `npm run dev`          | Servidor de desarrollo con HMR           |
 | `npm run build`        | Chequeo de tipos + build de producción   |
+| `npm run typecheck`    | Solo chequeo de tipos                    |
 | `npm run preview`      | Previsualizar el build                   |
 | `npm run lint`         | Lint con Oxlint                          |
 | `npm run format`       | Formatear con Prettier                   |
@@ -50,7 +60,7 @@ CORS por defecto.
 - Login contra `POST /auth/token` (form-urlencoded) y perfil con `GET /auth/me`.
 - El token JWT se guarda en `localStorage` y se adjunta como `Authorization: Bearer` en cada
   request.
-- Ante un `401` se limpia la sesión y se redirige al login.
+- Ante un `401` se limpia la sesión, la caché de datos y se redirige al login.
 - Roles: `ADMIN` (acceso total) y `SOCIO` (catálogo, disponibilidad y sus propios movimientos).
 - Usuario inicial del backend: `admin` / `admin1234`.
 
@@ -60,7 +70,7 @@ CORS por defecto.
 src/
   api/          Cliente Axios y llamadas a la API
   components/   Layout, guards y componentes de UI reutilizables
-  features/     Lógica por dominio (auth)
+  features/     Lógica por dominio (auth, catálogo)
   lib/          Utilidades (storage, errores)
   pages/        Vistas de la aplicación
   types/        Tipos compartidos de la API
@@ -70,4 +80,6 @@ src/
 
 - **M0**: base del proyecto, Tailwind, alias `@`, lint/format.
 - **M1**: autenticación, sesión persistente, guards por rol, layout con sidebar/topbar y rutas
-  protegidas. Las secciones funcionales quedan como placeholders hasta los próximos hitos.
+  protegidas.
+- **M2**: catálogo con filtros, detalle de libro con disponibilidad por sede, consulta de
+  disponibilidad, mis préstamos, mis reservas y perfil con cambio de contraseña.
