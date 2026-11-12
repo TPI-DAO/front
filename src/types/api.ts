@@ -20,6 +20,50 @@ export type EstadoPrestamo =
 
 export type EstadoReserva = 'ACTIVA' | 'CUMPLIDA' | 'CANCELADA'
 
+export type EstadoFisico = 'BUENO' | 'DANADO' | 'EXTRAVIADO' | 'DESTRUIDO'
+export type EstadoRemito = 'EMPAQUETADO' | 'DESPACHADO' | 'RECIBIDO' | 'INCIDENCIA' | 'CANCELADO'
+export type TipoRemito = 'ENVIO' | 'RETORNO'
+
+export interface Remito {
+  id: number
+  numero: string
+  tipo: TipoRemito
+  prestamo_id: number
+  ejemplar_id: number
+  sede_origen_id: number
+  sede_destino_id: number
+  estado: EstadoRemito
+  fecha_empaquetado: string
+  fecha_salida: string | null
+  fecha_llegada: string | null
+  estado_fisico_recepcion: EstadoFisico | null
+}
+
+export interface HistorialRemito {
+  id: number
+  fecha: string
+  estado_anterior: EstadoRemito | null
+  estado_nuevo: EstadoRemito
+  observacion: string | null
+}
+
+export interface Trazabilidad {
+  remito: Remito
+  historial: HistorialRemito[]
+}
+
+export interface Devolucion {
+  id: number
+  prestamo_id: number
+  sede_id: number
+  fecha: string
+  estado_fisico: EstadoFisico
+  observacion: string | null
+  dias_atraso: number
+  multa: string | number
+  remito_retorno_id: number | null
+}
+
 export interface Usuario {
   id: number
   username: string

@@ -34,6 +34,7 @@ export const ESTADOS_PRESTAMO: EstadoPrestamo[] = [
 export const ESTADOS_RESERVA: EstadoReserva[] = ['ACTIVA', 'CUMPLIDA', 'CANCELADA']
 
 const ETIQUETAS: Record<string, string> = {
+  BUENO: 'Bueno',
   ACTIVA: 'Activa',
   ACTIVO: 'Activo',
   BAJA: 'Baja',

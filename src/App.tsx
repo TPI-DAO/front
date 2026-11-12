@@ -6,10 +6,12 @@ import { AppShell } from '@/components/layout/AppShell'
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { ForbiddenPage } from '@/pages/ForbiddenPage'
-import { LoginPage } from '@/pages/LoginPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
 import { PlaceholderPage } from '@/pages/PlaceholderPage'
 
+const LoginPage = lazy(() =>
+  import('@/pages/LoginPage').then((modulo) => ({ default: modulo.LoginPage })),
+)
 const CatalogoPage = lazy(() =>
   import('@/pages/CatalogoPage').then((modulo) => ({ default: modulo.CatalogoPage })),
 )
@@ -43,6 +45,18 @@ const EjemplaresPage = lazy(() =>
 const UsuariosPage = lazy(() =>
   import('@/pages/admin/UsuariosPage').then((modulo) => ({ default: modulo.UsuariosPage })),
 )
+const PrestamosPage = lazy(() =>
+  import('@/pages/admin/PrestamosPage').then((m) => ({ default: m.PrestamosPage })),
+)
+const ReservasPage = lazy(() =>
+  import('@/pages/admin/ReservasPage').then((m) => ({ default: m.ReservasPage })),
+)
+const RemitosPage = lazy(() =>
+  import('@/pages/admin/RemitosPage').then((m) => ({ default: m.RemitosPage })),
+)
+const DevolucionesPage = lazy(() =>
+  import('@/pages/admin/DevolucionesPage').then((m) => ({ default: m.DevolucionesPage })),
+)
 
 export default function App() {
   return (
@@ -69,33 +83,10 @@ export default function App() {
               <Route path="admin/socios" element={<SociosPage />} />
               <Route path="admin/libros" element={<LibrosPage />} />
               <Route path="admin/ejemplares" element={<EjemplaresPage />} />
-              <Route
-                path="admin/prestamos"
-                element={
-                  <PlaceholderPage
-                    title="Préstamos"
-                    description="Registro y seguimiento de préstamos interbibliotecarios."
-                  />
-                }
-              />
-              <Route
-                path="admin/remitos"
-                element={
-                  <PlaceholderPage
-                    title="Remitos"
-                    description="Emisión y seguimiento de remitos de traslado."
-                  />
-                }
-              />
-              <Route
-                path="admin/devoluciones"
-                element={
-                  <PlaceholderPage
-                    title="Devoluciones"
-                    description="Registro de devoluciones y cálculo de multas."
-                  />
-                }
-              />
+              <Route path="admin/prestamos" element={<PrestamosPage />} />
+              <Route path="admin/reservas" element={<ReservasPage />} />
+              <Route path="admin/remitos" element={<RemitosPage />} />
+              <Route path="admin/devoluciones" element={<DevolucionesPage />} />
               <Route
                 path="admin/reportes"
                 element={

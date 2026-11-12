@@ -12,6 +12,7 @@ const toneClasses: Record<BadgeTone, string> = {
 }
 
 const estadoTones: Record<string, BadgeTone> = {
+  BUENO: 'success',
   ACTIVO: 'success',
   ACTIVA: 'success',
   DISPONIBLE: 'success',

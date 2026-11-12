@@ -31,4 +31,10 @@ export const queryKeys = {
 
   reservas: ['reservas'] as const,
   reservasLista: (filtros: Filtros = {}) => ['reservas', 'lista', filtros] as const,
+  remitos: ['remitos'] as const,
+  remitosLista: (filtros: Filtros = {}) => ['remitos', 'lista', filtros] as const,
+  trazabilidad: (busqueda: string | number) => ['remitos', 'trazabilidad', busqueda] as const,
+  devoluciones: ['devoluciones'] as const,
+  devolucionesLista: (filtros: Filtros = {}) => ['devoluciones', 'lista', filtros] as const,
+  reportes: ['reportes'] as const,
 }

@@ -19,6 +19,7 @@ export function Modal({
   children,
   footer,
   tamano = 'md',
+  bloqueado = false,
 }: {
   abierto: boolean
   titulo: string
@@ -27,11 +28,14 @@ export function Modal({
   children: ReactNode
   footer?: ReactNode
   tamano?: ModalSize
+  bloqueado?: boolean
 }) {
   const tituloId = useId()
   const descripcionId = useId()
   const panelRef = useRef<HTMLDivElement>(null)
-  const cerrarDesdeTeclado = useEffectEvent(() => onCerrar())
+  const cerrarDesdeTeclado = useEffectEvent(() => {
+    if (!bloqueado) onCerrar()
+  })
 
   useEffect(() => {
     if (!abierto) return
@@ -91,7 +95,7 @@ export function Modal({
     <div
       className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-slate-900/50 p-4 sm:items-center"
       onMouseDown={(event) => {
-        if (event.target === event.currentTarget) onCerrar()
+        if (!bloqueado && event.target === event.currentTarget) onCerrar()
       }}
     >
       <div
@@ -117,6 +121,7 @@ export function Modal({
           <button
             type="button"
             onClick={onCerrar}
+            disabled={bloqueado}
             className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700"
             aria-label="Cerrar"
           >

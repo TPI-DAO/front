@@ -45,15 +45,16 @@ CORS por defecto.
 
 ## Scripts
 
-| Comando                | Descripción                              |
-| ---------------------- | ---------------------------------------- |
-| `npm run dev`          | Servidor de desarrollo con HMR           |
-| `npm run build`        | Chequeo de tipos + build de producción   |
-| `npm run typecheck`    | Solo chequeo de tipos                    |
-| `npm run preview`      | Previsualizar el build                   |
-| `npm run lint`         | Lint con Oxlint                          |
-| `npm run format`       | Formatear con Prettier                   |
-| `npm run format:check` | Verificar formato sin modificar archivos |
+| Comando                | Descripción                                                |
+| ---------------------- | ---------------------------------------------------------- |
+| `npm run dev`          | Servidor de desarrollo con HMR                             |
+| `npm run build`        | Chequeo de tipos + build de producción                     |
+| `npm run typecheck`    | Solo chequeo de tipos                                      |
+| `npm run preview`      | Previsualizar el build                                     |
+| `npm run lint`         | Lint con Oxlint                                            |
+| `npm run format`       | Formatear con Prettier                                     |
+| `npm run format:check` | Verificar formato sin modificar archivos                   |
+| `npm test`             | Tests de operaciones con Vitest (sin API ni base de datos) |
 
 ## Autenticación
 
@@ -85,3 +86,37 @@ src/
   disponibilidad, mis préstamos, mis reservas y perfil con cambio de contraseña.
 - **M3**: administración de sedes, socios, libros, ejemplares y usuarios (altas, ediciones,
   cambios de estado y bajas según las reglas del backend).
+- **M4**: solicitudes y cancelaciones de préstamos/reservas, control de vencimientos,
+  generación de remitos, despacho, recepción con estado físico, trazabilidad por número o ID,
+  devoluciones con multas y seguimiento de los remitos de retorno.
+
+## Operaciones (M4)
+
+Las pruebas automatizadas de `src/features/operaciones/operaciones.test.ts` cubren identidad
+del socio, validación antes del envío, payloads HTTP, errores de negocio, prevención de remitos
+duplicados e invalidación de las consultas relacionadas. Usan un adaptador HTTP en memoria;
+el recorrido manual de abajo requiere el backend en ejecución.
+
+- **SOCIO**: puede solicitar préstamos y reservas desde el detalle del libro o sus listados.
+  Solo puede cancelar préstamos `SOLICITADO` y reservas `ACTIVA`. El socio se toma de la sesión.
+- **ADMIN**: registra operaciones para socios habilitados y administra préstamos, reservas,
+  remitos y devoluciones. Las rutas están protegidas por rol.
+- **Local**: misma sede origen/destino; el backend activa el préstamo y su vencimiento.
+- **Interbibliotecario**: `SOLICITADO` → empaquetado → despacho (`EN_TRANSITO`) → recepción
+  en buen estado (`ACTIVO`). Un préstamo solicitado se puede cancelar junto con su remito empaquetado.
+- **Remitos**: `EMPAQUETADO` permite despachar; `DESPACHADO` permite recibir. La recepción
+  registra `BUENO`, `DANADO`, `EXTRAVIADO` o `DESTRUIDO`; el backend determina el resultado.
+- **Devoluciones**: solo para préstamos `ACTIVO` o `VENCIDO`. El servidor calcula atraso/multa
+  y genera el retorno cuando corresponde; no se crean remitos de retorno manualmente.
+- Todas las mutaciones invalidan la caché relacionada (préstamos, reservas, remitos,
+  devoluciones, ejemplares, disponibilidad y reportes) antes de completar la operación.
+
+### Recorrido de verificación manual
+
+1. Solicitar un préstamo local y devolverlo; comprobar estado físico, atraso y multa.
+2. Solicitar uno interbibliotecario, empaquetarlo, despacharlo y recibirlo en buen estado.
+3. Registrar su devolución y despachar/recibir el retorno generado automáticamente.
+4. Consultar la trazabilidad por número y verificar el historial de ambas direcciones.
+5. Reservar un libro, solicitarlo desde la misma sede y comprobar que la reserva se cumple.
+6. Cancelar una solicitud empaquetada y comprobar cancelación del remito/liberación de stock.
+7. Probar recepción con daño/extravío/destrucción y verificar el resultado y la disponibilidad.

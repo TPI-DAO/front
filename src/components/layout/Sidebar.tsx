@@ -44,6 +44,7 @@ const adminItems: NavItem[] = [
   { to: '/admin/libros', label: 'Libros', icon: BookPlus },
   { to: '/admin/ejemplares', label: 'Ejemplares', icon: Library },
   { to: '/admin/prestamos', label: 'Préstamos', icon: ClipboardList },
+  { to: '/admin/reservas', label: 'Reservas', icon: CalendarClock },
   { to: '/admin/remitos', label: 'Remitos', icon: FileText },
   { to: '/admin/devoluciones', label: 'Devoluciones', icon: RotateCcw },
   { to: '/admin/reportes', label: 'Reportes', icon: BarChart3 },

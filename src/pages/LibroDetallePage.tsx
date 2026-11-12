@@ -1,16 +1,23 @@
 import { useQuery } from '@tanstack/react-query'
 import { ArrowLeft } from 'lucide-react'
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { obtenerLibro } from '@/api/catalogo'
 import { consultarDisponibilidad } from '@/api/disponibilidad'
 import { DisponibilidadTable } from '@/components/disponibilidad/DisponibilidadTable'
 import { Badge } from '@/components/ui/Badge'
+import { Alert } from '@/components/ui/Alert'
+import { Button } from '@/components/ui/Button'
 import { PageHeader } from '@/components/ui/PageHeader'
 import { EmptyState, ErrorState, LoadingState } from '@/components/ui/States'
 import { mensajeDeError } from '@/lib/errors'
 import { queryKeys } from '@/lib/queryKeys'
+import { useFeedback } from '@/lib/useFeedback'
+import { SolicitudModal } from '@/features/operaciones/SolicitudModal'
 
 export function LibroDetallePage() {
+  const [solicitud, setSolicitud] = useState<'prestamo' | 'reserva' | null>(null)
+  const { feedback, mostrarExito, cerrarFeedback } = useFeedback()
   const { libroId: libroIdParam } = useParams<{ libroId: string }>()
   const libroId = Number(libroIdParam)
   const idValido = Number.isInteger(libroId) && libroId > 0
@@ -61,13 +68,25 @@ export function LibroDetallePage() {
         title={libro.titulo}
         description={`${libro.autor.nombre} · ${libro.genero.nombre}`}
         actions={
-          <Badge tone={totalNeto > 0 ? 'success' : 'neutral'}>
-            {totalNeto > 0
-              ? `${totalNeto} disponible${totalNeto === 1 ? '' : 's'}`
-              : 'Sin stock neto'}
-          </Badge>
+          <>
+            <Badge tone={totalNeto > 0 ? 'success' : 'neutral'}>
+              {totalNeto > 0
+                ? `${totalNeto} disponible${totalNeto === 1 ? '' : 's'}`
+                : 'Sin stock neto'}
+            </Badge>
+            <Button onClick={() => setSolicitud('prestamo')}>Solicitar préstamo</Button>
+            <Button variant="secondary" onClick={() => setSolicitud('reserva')}>
+              Reservar
+            </Button>
+          </>
         }
       />
+
+      {feedback && (
+        <Alert tone={feedback.tone} onClose={cerrarFeedback}>
+          {feedback.mensaje}
+        </Alert>
+      )}
 
       <div className="mb-6 grid gap-4 rounded-xl border border-slate-200 bg-white p-5 sm:grid-cols-2 lg:grid-cols-4">
         <div>
@@ -109,6 +128,17 @@ export function LibroDetallePage() {
       )}
 
       {disponibilidadQuery.isSuccess && filas.length > 0 && <DisponibilidadTable filas={filas} />}
+      {solicitud && (
+        <SolicitudModal
+          tipo={solicitud}
+          libroId={libroId}
+          onCerrar={() => setSolicitud(null)}
+          onSaved={(mensaje) => {
+            setSolicitud(null)
+            mostrarExito(mensaje)
+          }}
+        />
+      )}
     </div>
   )
 }
