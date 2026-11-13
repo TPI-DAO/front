@@ -10,13 +10,10 @@ import {
   Library,
   RotateCcw,
   Search,
-  UserCog,
-  UserRound,
   Users,
   type LucideIcon,
 } from 'lucide-react'
 import { Link, NavLink } from 'react-router-dom'
-import { useAuth } from '@/features/auth/useAuth'
 
 interface NavItem {
   to: string
@@ -31,22 +28,16 @@ const generalItems: NavItem[] = [
   { to: '/disponibilidad', label: 'Disponibilidad', icon: Search },
 ]
 
-const socioItems: NavItem[] = [
-  { to: '/mis-prestamos', label: 'Mis préstamos', icon: ClipboardList },
-  { to: '/mis-reservas', label: 'Mis reservas', icon: CalendarClock },
-  { to: '/perfil', label: 'Mi perfil', icon: UserRound },
-]
-
 const adminItems: NavItem[] = [
   { to: '/admin/sedes', label: 'Sedes', icon: Building2 },
   { to: '/admin/socios', label: 'Socios', icon: Users },
   { to: '/admin/libros', label: 'Libros', icon: BookPlus },
   { to: '/admin/ejemplares', label: 'Ejemplares', icon: Library },
   { to: '/admin/prestamos', label: 'Préstamos', icon: ClipboardList },
+  { to: '/admin/reservas', label: 'Reservas', icon: CalendarClock },
   { to: '/admin/remitos', label: 'Remitos', icon: FileText },
   { to: '/admin/devoluciones', label: 'Devoluciones', icon: RotateCcw },
   { to: '/admin/reportes', label: 'Reportes', icon: BarChart3 },
-  { to: '/admin/usuarios', label: 'Usuarios', icon: UserCog },
 ]
 
 function NavGroup({ title, items }: { title?: string; items: NavItem[] }) {
@@ -82,8 +73,6 @@ function NavGroup({ title, items }: { title?: string; items: NavItem[] }) {
 }
 
 export function Sidebar() {
-  const { usuario } = useAuth()
-
   return (
     <aside className="hidden w-64 shrink-0 flex-col border-r border-slate-200 bg-white md:flex">
       <Link to="/" className="flex items-center gap-2.5 border-b border-slate-200 px-5 py-5">
@@ -98,8 +87,7 @@ export function Sidebar() {
 
       <nav className="flex-1 space-y-6 overflow-y-auto p-4">
         <NavGroup items={generalItems} />
-        {usuario?.rol === 'SOCIO' && <NavGroup title="Mi cuenta" items={socioItems} />}
-        {usuario?.rol === 'ADMIN' && <NavGroup title="Administración" items={adminItems} />}
+        <NavGroup title="Operaciones" items={adminItems} />
       </nav>
     </aside>
   )
