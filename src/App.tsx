@@ -7,7 +7,7 @@ import { FullScreenLoader } from '@/components/ui/FullScreenLoader'
 import { DashboardPage } from '@/pages/DashboardPage'
 import { ForbiddenPage } from '@/pages/ForbiddenPage'
 import { NotFoundPage } from '@/pages/NotFoundPage'
-import { PlaceholderPage } from '@/pages/PlaceholderPage'
+import { OperationsPage } from '@/pages/OperationsPage'
 
 const LoginPage = lazy(() =>
   import('@/pages/LoginPage').then((modulo) => ({ default: modulo.LoginPage })),
@@ -87,15 +87,7 @@ export default function App() {
               <Route path="admin/reservas" element={<ReservasPage />} />
               <Route path="admin/remitos" element={<RemitosPage />} />
               <Route path="admin/devoluciones" element={<DevolucionesPage />} />
-              <Route
-                path="admin/reportes"
-                element={
-                  <PlaceholderPage
-                    title="Reportes"
-                    description="Reportes operativos y estadísticos del sistema."
-                  />
-                }
-              />
+              <Route path="admin/reportes" element={<OperationsPage section="reportes" />} />
               <Route path="admin/usuarios" element={<UsuariosPage />} />
             </Route>
           </Route>

@@ -15,7 +15,7 @@ préstamos interbibliotecarios.
 ## Requisitos
 
 - Node.js 20.19+ (probado con Node 22)
-- Backend de la API corriendo en `http://localhost:8000`
+- Backend de la API corriendo en `http://127.0.0.1:8000`
 
 ## Puesta en marcha
 
@@ -34,14 +34,14 @@ cp .env.example .env
 Copy-Item .env.example .env
 ```
 
-La aplicación queda disponible en `http://localhost:5173`. El backend ya permite este origen por
-CORS por defecto.
+La aplicación queda disponible en `http://localhost:5173`. El backend permite los orígenes locales
+`localhost` y `127.0.0.1` por CORS.
 
 ### Variables de entorno
 
 | Variable       | Descripción                | Valor por defecto       |
 | -------------- | -------------------------- | ----------------------- |
-| `VITE_API_URL` | URL base de la API backend | `http://localhost:8000` |
+| `VITE_API_URL` | URL base de la API backend | `http://127.0.0.1:8000` |
 
 ## Scripts
 
@@ -56,7 +56,7 @@ CORS por defecto.
 | `npm run format:check` | Verificar formato sin modificar archivos                   |
 | `npm test`             | Tests de operaciones con Vitest (sin API ni base de datos) |
 
-## Autenticación
+## Acceso local
 
 - Login contra `POST /auth/token` (form-urlencoded) y perfil con `GET /auth/me`.
 - El token JWT se guarda en `localStorage` y se adjunta como `Authorization: Bearer` en cada
